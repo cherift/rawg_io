@@ -1,0 +1,2 @@
+rootProject.name='RAWG - Youtube Monitor'
+include ':app'
