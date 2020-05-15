@@ -1,4 +1,4 @@
-lspackage com.example.rawg_youtubemonitor
+package com.example.rawg_youtubemonitor
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
