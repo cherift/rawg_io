@@ -36,7 +36,6 @@ class VideoAdapter : RecyclerView.Adapter<VideoViewHolder>() {
     fun bindViewModels(videos: List<Video>){
         this.videos = videos
         notifyDataSetChanged()
-        println("je suis bindviewholders")
     }
 
 

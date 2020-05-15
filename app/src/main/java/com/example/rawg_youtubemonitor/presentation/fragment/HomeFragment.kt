@@ -58,8 +58,6 @@ class HomeFragment : Fragment() {
             Video("", "Titre 0", "Chaine 0", 15),
             Video("", "Titre 0", "Chaine 0", 15))
 
-        println("je suis homefragment")
-
         videoAdapter!!.bindViewModels(videos)
     }
 }
