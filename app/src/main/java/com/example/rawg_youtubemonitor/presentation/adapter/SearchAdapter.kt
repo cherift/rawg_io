@@ -37,6 +37,8 @@ class SearchAdapter(val searchview: GetVideosContrat.SearchView) : RecyclerView.
     /**
      * Helps the associated fragment ta add of remove
      * the game founded at the position passed as parameter
+     *
+     * @param position: the position of the game in the list
      */
     fun toogleAction(position: Int) = searchview.addOrRemoveGame(games[position])
 

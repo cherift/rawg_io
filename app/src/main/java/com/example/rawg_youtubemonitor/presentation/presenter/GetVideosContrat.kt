@@ -63,5 +63,7 @@ class GetVideosContrat {
         fun addOrRemoveGame(game: Game)
 
         fun prepareGames(gameResponse: GetGameResponse)
+
+        fun displayGames(games: MutableList<Game>)
     }
 }

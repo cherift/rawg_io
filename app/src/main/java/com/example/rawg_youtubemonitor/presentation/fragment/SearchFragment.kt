@@ -141,9 +141,20 @@ class SearchFragment : Fragment(), GetVideosContrat.SearchView {
             }, 300)
         }
 
-        progress!!.visibility = View.GONE
-        searchAdapter!!.bindViewModels(listGames)
+        displayGames(listGames)
     }
+
+    /**
+     * Displays the games in the recycler view
+     *
+     * @param games: the list of games
+     */
+    override fun displayGames(games: MutableList<Game>){
+        presenter.cancelSubscription()
+        progress!!.visibility = View.GONE
+        searchAdapter!!.bindViewModels(games)
+    }
+
 
     /**
      * Adds a game in the database.
