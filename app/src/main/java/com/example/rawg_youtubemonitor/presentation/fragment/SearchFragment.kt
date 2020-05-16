@@ -51,13 +51,18 @@ class SearchFragment : Fragment(), GetVideosContrat.SearchView {
         progress = rootView!!.findViewById(R.id.progress_circular)
 
         setupRecyclerView()
-        searchGames()
+
+        if(listGames.isNotEmpty()){
+            searchAdapter!!.bindViewModels(listGames)
+        }
 
         return rootView
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        searchGames()
     }
 
     /**
