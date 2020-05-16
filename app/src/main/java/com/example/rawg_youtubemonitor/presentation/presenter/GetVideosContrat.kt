@@ -1,5 +1,8 @@
 package com.example.rawg_youtubemonitor.presentation.presenter
 
+import android.provider.MediaStore
+import com.example.rawg_youtubemonitor.data.model.Game
+import com.example.rawg_youtubemonitor.data.model.Video
 import io.reactivex.disposables.CompositeDisposable
 
 /**
@@ -40,7 +43,12 @@ class GetVideosContrat {
 
     }
 
-    interface View {
+    interface GetVideosView {
 
+        fun prepareVideos(games: MutableList<Game>)
+
+        fun displayVideos(videos: MutableList<Video>)
+
+        fun readVideo(video: Video)
     }
 }

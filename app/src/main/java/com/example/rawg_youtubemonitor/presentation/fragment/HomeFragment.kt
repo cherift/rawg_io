@@ -1,24 +1,35 @@
 package com.example.rawg_youtubemonitor.presentation.fragment
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rawg_youtubemonitor.R
+import com.example.rawg_youtubemonitor.data.model.Game
 import com.example.rawg_youtubemonitor.data.model.Video
 import com.example.rawg_youtubemonitor.presentation.adapter.VideoAdapter
+import com.example.rawg_youtubemonitor.presentation.presenter.GetVideosContrat
+import com.example.rawg_youtubemonitor.presentation.presenter.GetVideosPresenter
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), GetVideosContrat.GetVideosView {
 
     var rootView : View? = null
     var recyclerView : RecyclerView? = null
     var videoAdapter : VideoAdapter? = null
+    var progress: ProgressBar? = null
 
 
     companion object {
+        var listGames : MutableList<Game> = mutableListOf<Game>()
+        var listVideos : MutableList<Video> = mutableListOf<Video>()
+
+        val presenter : GetVideosPresenter = GetVideosPresenter()
+
         fun newInstance() : HomeFragment  = HomeFragment()
     }
 
@@ -31,6 +42,7 @@ class HomeFragment : Fragment() {
 
         rootView = inflater.inflate(R.layout.all_videos_fragment, container, false)
 
+        progress = rootView!!.findViewById(R.id.progress_circular)
         setupRecyclerView()
 
         return rootView
@@ -48,16 +60,32 @@ class HomeFragment : Fragment() {
         val viewManager = LinearLayoutManager(activity)
         recyclerView!!.layoutManager = viewManager
 
+    }
 
-        //Testing with static list
-        var videos : List<Video> = listOf(
-            Video("", "Titre 0", "Chaine 0", 15),
-            Video("", "Titre 0", "Chaine 0", 15),
-            Video("", "Titre 0", "Chaine 0", 15),
-            Video("", "Titre 0", "Chaine 0", 15),
-            Video("", "Titre 0", "Chaine 0", 15),
-            Video("", "Titre 0", "Chaine 0", 15))
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
-        videoAdapter!!.bindViewModels(videos)
+        presenter.attachView(this)
+        presenter.searchGames()
+    }
+
+    /**
+     *
+     */
+    override fun prepareVideos(games: MutableList<Game>) {
+        listGames.addAll(games)
+
+        listGames.forEach { game -> presenter.searchGameVideos(game.id.toString()) }
+    }
+
+    override fun displayVideos(videos: MutableList<Video>) {
+        listVideos.addAll(videos)
+
+        progress!!.visibility = View.GONE
+        videoAdapter!!.bindViewModels(listVideos)
+    }
+
+    override fun readVideo(video: Video) {
+        TODO("not implemented")
     }
 }

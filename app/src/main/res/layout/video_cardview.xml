@@ -4,15 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="130dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardMaxElevation="10dp"
     app:cardCornerRadius="10dp"
-    android:layout_margin="10dp">
+    android:layout_margin="10dp"
+    android:id="@+id/cardButton">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorPrimary"
+        android:paddingRight="10dp">
 
         <ImageView
             android:id="@+id/miniature"
@@ -21,15 +22,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteY="1dp"
-            tools:srcCompat="@tools:sample/avatars"/>
+            tools:srcCompat="@tools:sample/avatars"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"/>
 
         <TextView
             android:id="@+id/videoTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/textColor"
-            android:textSize="15dp"
+            android:textSize="16dp"
             android:fontFamily="@font/roboto_bold"
             tools:text="Titre de la video"
             app:layout_constraintLeft_toLeftOf="@+id/channelName"
@@ -41,8 +43,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/textColor"
-            android:textSize="15dp"
+            android:textSize="16dp"
             android:fontFamily="@font/roboto_bold"
+            android:layout_marginTop="15dp"
             tools:text="Nom de la chaine"
             app:layout_constraintLeft_toRightOf="@+id/miniature"
             app:layout_constraintTop_toTopOf="parent"
@@ -54,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/textColor"
-            android:textSize="15dp"
+            android:textSize="16dp"
             android:fontFamily="@font/roboto_bold"
             app:layout_constraintLeft_toLeftOf="@+id/channelName"
             tools:text="160"

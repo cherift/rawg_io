@@ -14,7 +14,7 @@ import com.example.rawg_youtubemonitor.presentation.holder.VideoViewHolder
  */
 class VideoAdapter : RecyclerView.Adapter<VideoViewHolder>() {
 
-    var videos : List<Video> = listOf<Video>()
+    var videos : MutableList<Video> = mutableListOf<Video>()
 
     /**
      * Creates a new view
@@ -33,7 +33,7 @@ class VideoAdapter : RecyclerView.Adapter<VideoViewHolder>() {
      *
      * @param videos : the list of videos
      */
-    fun bindViewModels(videos: List<Video>){
+    fun bindViewModels(videos: MutableList<Video>){
         this.videos = videos
         notifyDataSetChanged()
     }

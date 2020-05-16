@@ -36,12 +36,12 @@ class VideoViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
      */
     fun bind(video: Video){
         videoTitle?.text = video.videoTitle
-        channelName?.text = video.channelName
-        nbViews?.text = video.nbViews.toString()
+        channelName?.text = "Chaine : "+ video.channelName
+        nbViews?.text = "Vues : "+video.nbViews.toString()
 
         Glide
             .with(view)
-            .load(video.miniatureUrl)
+            .load(video.miniature.high.url)
             .into(miniature!!)
     }
 }
