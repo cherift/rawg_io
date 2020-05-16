@@ -130,7 +130,7 @@ class SearchFragment : Fragment(), GetVideosContrat.SearchView {
 
             val myHandler: Handler = Handler()
             myHandler.postDelayed(Runnable {
-                presenter.getSearchedGames(searchQuery!!, uri.getQueryParameter("page")!!.toInt())
+                searchQuery?.let { presenter.getSearchedGames(it, uri.getQueryParameter("page")!!.toInt()) }
             }, 300)
         }
 
