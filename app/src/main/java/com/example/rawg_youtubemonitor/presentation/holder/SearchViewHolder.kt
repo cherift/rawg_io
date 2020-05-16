@@ -22,6 +22,16 @@ class SearchViewHolder(val view: View, adapter: SearchAdapter) : RecyclerView.Vi
         game_name = view.findViewById(R.id.game_name)
         game_note = view.findViewById(R.id.game_note)
         toogle_action = view.findViewById(R.id.toogle_action)
+
+        toogle_action!!.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(v: View?) {
+                val position : Int = adapterPosition
+
+                if (position != RecyclerView.NO_POSITION) {
+                    adapter.toogleAction(position)
+                }
+            }
+        })
     }
 
 

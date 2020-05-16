@@ -13,12 +13,15 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rawg_youtubemonitor.R
+import com.example.rawg_youtubemonitor.data.dao.GameDao
+import com.example.rawg_youtubemonitor.data.database.GameDatabase
 import com.example.rawg_youtubemonitor.data.model.Game
 import com.example.rawg_youtubemonitor.data.model.GetGameResponse
 import com.example.rawg_youtubemonitor.data.model.TypeOfView
 import com.example.rawg_youtubemonitor.presentation.adapter.SearchAdapter
 import com.example.rawg_youtubemonitor.presentation.presenter.GetVideosContrat
 import com.example.rawg_youtubemonitor.presentation.presenter.SearchPresenter
+import com.google.android.material.snackbar.Snackbar
 
 class SearchFragment : Fragment(), GetVideosContrat.SearchView {
 
@@ -28,6 +31,7 @@ class SearchFragment : Fragment(), GetVideosContrat.SearchView {
     var progress: ProgressBar? = null
     var searchQuery: String? = null
     var searchAdapter: SearchAdapter? = null
+    var gameDao: GameDao? = null
 
     companion object {
         val presenter : SearchPresenter = SearchPresenter()
@@ -55,6 +59,9 @@ class SearchFragment : Fragment(), GetVideosContrat.SearchView {
         if(listGames.isNotEmpty()){
             searchAdapter!!.bindViewModels(listGames)
         }
+
+        // Initializes the game dao object
+        gameDao = GameDatabase.getInstance(activity!!.application).gameDao()
 
         return rootView
     }
@@ -139,12 +146,18 @@ class SearchFragment : Fragment(), GetVideosContrat.SearchView {
     }
 
     /**
-     * Adds a in the database.
+     * Adds a game in the database.
      *
      * @param game: the game to be added
      */
     override fun addOrRemoveGame(game: Game) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        presenter.addGameInFavourites(game, gameDao!!)
+
+        Snackbar.make(
+            recyclerView!!,
+            "${game.name} has been added in your favourites",
+            Snackbar.LENGTH_SHORT
+        ).show()
     }
 
     /**
