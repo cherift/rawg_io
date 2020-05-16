@@ -150,7 +150,6 @@ class SearchFragment : Fragment(), GetVideosContrat.SearchView {
      * @param games: the list of games
      */
     override fun displayGames(games: MutableList<Game>){
-        presenter.cancelSubscription()
         progress!!.visibility = View.GONE
         searchAdapter!!.bindViewModels(games)
     }

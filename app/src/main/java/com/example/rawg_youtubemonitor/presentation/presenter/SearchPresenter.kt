@@ -86,11 +86,37 @@ class SearchPresenter : GetVideosContrat.Presenter<GetVideosContrat.SearchView>(
             .subscribeWith(object : ResourceSubscriber<MutableList<Game>>() {
 
                 override fun onNext(games : MutableList<Game>) {
-                    println("je suis ici dans le present ${games.size}")
                     view?.displayGames(games)
                 }
 
                 override fun onComplete() {}
+
+                override fun onError(e: Throwable) {
+                    println(e.message)
+                }
+            })
+        )
+    }
+
+    /**
+     * Removes a game from the database.
+     *
+     * @param musicDao : the music DAO model
+     * @param musicEntity : the music entity
+     */
+    fun removeGame(game: Game, gameDao: GameDao) {
+        val compositeDisposable : CompositeDisposable = CompositeDisposable()
+
+        compositeDisposable.clear()
+
+        compositeDisposable.add(gameDao.delete(game)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeWith(object : DisposableCompletableObserver() {
+
+                override fun onComplete() {
+                    println("deleting music from database")
+                }
 
                 override fun onError(e: Throwable) {
                     println(e.message)

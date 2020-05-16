@@ -1,9 +1,6 @@
 package com.example.rawg_youtubemonitor.data.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.rawg_youtubemonitor.data.model.Game
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -16,4 +13,7 @@ interface GameDao {
 
     @Query("SELECT * FROM games")
     fun findAll() : Flowable<MutableList<Game>>
+
+    @Delete
+    fun delete(game: Game) : Completable
 }

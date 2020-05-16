@@ -16,6 +16,7 @@ import com.example.rawg_youtubemonitor.data.model.TypeOfView
 import com.example.rawg_youtubemonitor.presentation.adapter.SearchAdapter
 import com.example.rawg_youtubemonitor.presentation.presenter.GetVideosContrat
 import com.example.rawg_youtubemonitor.presentation.presenter.SearchPresenter
+import com.google.android.material.snackbar.Snackbar
 
 class FavouriteFragment : Fragment(), GetVideosContrat.SearchView {
 
@@ -78,8 +79,19 @@ class FavouriteFragment : Fragment(), GetVideosContrat.SearchView {
         presenter.getFavouriteGames(gameDao!!)
     }
 
+    /**
+     * Removes a game from database.
+     *
+     * @param game: the game to remove
+     */
     override fun addOrRemoveGame(game: Game) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        presenter.removeGame(game, gameDao!!)
+
+        Snackbar.make(
+            recyclerView!!,
+            "${game.name} has been removed from your favourites",
+            Snackbar.LENGTH_SHORT
+        ).show()
     }
 
     /**
@@ -88,7 +100,6 @@ class FavouriteFragment : Fragment(), GetVideosContrat.SearchView {
      * @param games: the list of games
      */
     override fun displayGames(games: MutableList<Game>){
-        SearchFragment.presenter.cancelSubscription()
         searchAdapter!!.bindViewModels(games)
     }
 
