@@ -101,8 +101,8 @@ class SearchPresenter : GetVideosContrat.Presenter<GetVideosContrat.SearchView>(
     /**
      * Removes a game from the database.
      *
-     * @param musicDao : the music DAO model
-     * @param musicEntity : the music entity
+     * @param game : the game to remove
+     * @param gameDao : the the game DAO model
      */
     fun removeGame(game: Game, gameDao: GameDao) {
         val compositeDisposable : CompositeDisposable = CompositeDisposable()
@@ -115,7 +115,7 @@ class SearchPresenter : GetVideosContrat.Presenter<GetVideosContrat.SearchView>(
             .subscribeWith(object : DisposableCompletableObserver() {
 
                 override fun onComplete() {
-                    println("deleting music from database")
+                    println("deleting game from database")
                 }
 
                 override fun onError(e: Throwable) {
