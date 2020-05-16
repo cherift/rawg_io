@@ -5,4 +5,5 @@
     <color name="colorAccent">#151515</color>
     <color name="textColor">#ffffff</color>
     <color name="selectTextColor">#6dc849</color>
+    <color name="searchViewColor">#737373</color>
 </resources>

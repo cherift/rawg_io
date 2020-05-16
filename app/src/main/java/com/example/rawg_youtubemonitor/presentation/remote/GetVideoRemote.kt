@@ -12,4 +12,6 @@ class GetVideoRemote {
     fun getAllGames() : Single<GetGameResponse> = service.getAllGames()
 
     fun getGameVideos(id: String) : Single<GetVideoResponse> = service.getGameVideos(id)
+
+    fun getSearchedGames(search: String, page: Int) : Single<GetGameResponse> = service.getSearchedGames(search, page)
 }

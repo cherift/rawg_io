@@ -22,6 +22,9 @@ interface RawgService {
     @GET("games/{id}/youtube")
     fun getGameVideos(@Path("id") id: String) : Single<GetVideoResponse>
 
+    @GET("games")
+    fun getSearchedGames(@Query("search") search: String, @Query("page") page: Int) : Single<GetGameResponse>
+
     companion object {
         operator fun invoke() : RawgService {
             val interceptor : HttpLoggingInterceptor = HttpLoggingInterceptor()
