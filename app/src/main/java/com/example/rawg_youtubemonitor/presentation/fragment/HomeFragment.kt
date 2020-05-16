@@ -1,5 +1,6 @@
 package com.example.rawg_youtubemonitor.presentation.fragment
 
+import android.content.Intent
 import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rawg_youtubemonitor.R
+import com.example.rawg_youtubemonitor.YoutubeActivity
 import com.example.rawg_youtubemonitor.data.model.Game
 import com.example.rawg_youtubemonitor.data.model.Video
 import com.example.rawg_youtubemonitor.presentation.adapter.VideoAdapter
@@ -22,6 +24,7 @@ class HomeFragment : Fragment(), GetVideosContrat.GetVideosView {
     var recyclerView : RecyclerView? = null
     var videoAdapter : VideoAdapter? = null
     var progress: ProgressBar? = null
+    val EXTRA_MESSAGE = "MESSAGE"
 
 
     companion object {
@@ -54,7 +57,7 @@ class HomeFragment : Fragment(), GetVideosContrat.GetVideosView {
      */
     fun setupRecyclerView(){
         recyclerView = rootView!!.findViewById(R.id.recyclerview)
-        videoAdapter = VideoAdapter()
+        videoAdapter = VideoAdapter(this)
         recyclerView!!.adapter = videoAdapter
 
         val viewManager = LinearLayoutManager(activity)
@@ -70,7 +73,9 @@ class HomeFragment : Fragment(), GetVideosContrat.GetVideosView {
     }
 
     /**
+     * Searches all video associated for each game founded
      *
+     * @param games: the games founded
      */
     override fun prepareVideos(games: MutableList<Game>) {
         listGames.addAll(games)
@@ -78,6 +83,11 @@ class HomeFragment : Fragment(), GetVideosContrat.GetVideosView {
         listGames.forEach { game -> presenter.searchGameVideos(game.id.toString()) }
     }
 
+    /**
+     * Displays all videos founded in the list view
+     *
+     * @param videos: the videos founded
+     */
     override fun displayVideos(videos: MutableList<Video>) {
         listVideos.addAll(videos)
 
@@ -85,7 +95,15 @@ class HomeFragment : Fragment(), GetVideosContrat.GetVideosView {
         videoAdapter!!.bindViewModels(listVideos)
     }
 
+    /**
+     * Starts a new activity to play the video by sending the external id to the new activity
+     *
+     * @param video: the video to play
+     */
     override fun readVideo(video: Video) {
-        TODO("not implemented")
+        val intent: Intent = Intent(activity, YoutubeActivity::class.java).apply{
+            putExtra(EXTRA_MESSAGE, video.externalId)
+        }
+        startActivity(intent)
     }
 }

@@ -12,7 +12,7 @@ import com.example.rawg_youtubemonitor.presentation.holder.VideoViewHolder
 /**
  * Class VideoAdapter used to create a view of each data founded from de Home Fragment
  */
-class VideoAdapter : RecyclerView.Adapter<VideoViewHolder>() {
+class VideoAdapter(val fragment: HomeFragment) : RecyclerView.Adapter<VideoViewHolder>() {
 
     var videos : MutableList<Video> = mutableListOf<Video>()
 
@@ -24,8 +24,17 @@ class VideoAdapter : RecyclerView.Adapter<VideoViewHolder>() {
                     .from(parent.context)
                     .inflate(R.layout.video_cardview, parent, false)
 
-        return VideoViewHolder(view)
+        return VideoViewHolder(view, this)
     }
+
+    /**
+     * Helps the fragment to play a video.
+     *
+     * It will send to the fragment the clicked item video
+     *
+     * @param position: position of listview clicked
+     */
+    fun playVideoHelper(position: Int) = fragment.readVideo(videos[position])
 
 
     /**
