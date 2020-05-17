@@ -1,8 +1,10 @@
 package com.example.rawg_youtubemonitor.presentation.fragment
 
 import android.content.Intent
+import android.net.Uri
 import android.opengl.Visibility
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rawg_youtubemonitor.R
 import com.example.rawg_youtubemonitor.YoutubeActivity
 import com.example.rawg_youtubemonitor.data.model.Game
+import com.example.rawg_youtubemonitor.data.model.GetGameResponse
+import com.example.rawg_youtubemonitor.data.model.GetVideoResponse
 import com.example.rawg_youtubemonitor.data.model.Video
 import com.example.rawg_youtubemonitor.presentation.adapter.VideoAdapter
 import com.example.rawg_youtubemonitor.presentation.presenter.GetVideosContrat
@@ -69,18 +73,31 @@ class HomeFragment : Fragment(), GetVideosContrat.GetVideosView {
         super.onActivityCreated(savedInstanceState)
 
         presenter.attachView(this)
-        presenter.searchGames()
+        /*
+            Searching games result for page 1 and delaying 300 ms
+            while schedule processing.
+        */
+        val myHandler: Handler = Handler()
+        myHandler.postDelayed(Runnable {
+            presenter.searchGames(1)
+        }, 300)
     }
 
     /**
-     * Searches all video associated for each game founded
+     * Searches all video associated for each game founded.
+     * As taking long time for search all game for all pages.
      *
-     * @param games: the games founded
+     * @param gameResponse: the response of the the game search
      */
-    override fun prepareVideos(games: MutableList<Game>) {
-        listGames.addAll(games)
+    override fun prepareVideos(gameResponse: GetGameResponse) {
+        listGames.addAll(gameResponse.games)
 
-        listGames.forEach { game -> presenter.searchGameVideos(game.id.toString()) }
+        listGames.forEach { game ->
+            val myHandler: Handler = Handler()
+            myHandler.postDelayed(Runnable {
+                presenter.searchGameVideos(game.id.toString())
+            }, 300)
+        }
     }
 
     /**
@@ -88,8 +105,8 @@ class HomeFragment : Fragment(), GetVideosContrat.GetVideosView {
      *
      * @param videos: the videos founded
      */
-    override fun displayVideos(videos: MutableList<Video>) {
-        listVideos.addAll(videos)
+    override fun displayVideos(videoResponse: GetVideoResponse) {
+        listVideos.addAll(videoResponse.videos)
 
         progress!!.visibility = View.GONE
         videoAdapter!!.bindViewModels(listVideos)

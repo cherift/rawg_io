@@ -9,7 +9,7 @@ class GetVideoRemote {
 
     private val service : RawgService = RawgService()
 
-    fun getAllGames() : Single<GetGameResponse> = service.getAllGames()
+    fun getAllGames(page: Int, page_size: Int) : Single<GetGameResponse> = service.getAllGames(page, page_size)
 
     fun getGameVideos(id: String) : Single<GetVideoResponse> = service.getGameVideos(id)
 

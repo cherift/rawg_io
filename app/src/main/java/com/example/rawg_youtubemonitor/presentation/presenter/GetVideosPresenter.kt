@@ -12,21 +12,27 @@ class GetVideosPresenter :  GetVideosContrat.Presenter<GetVideosContrat.GetVideo
 
     /**
      * Searches all games available on Rawg.io and passes the
-     * result founded to the attached view
+     * result founded to the attached view.
+     *
+     * Result founded corresponds only to a page passed as parameter.
+     *
+     * @param page: the page number within the paginated result set.
+     * @param page_size: the number of results to return per page.
+     *                   By default, this value is 50.
      */
-    fun searchGames() {
+    fun searchGames(page: Int, page_size: Int = 50) {
         val compositeDisposable : CompositeDisposable = CompositeDisposable()
 
         val getVideoRepo = GetVideoRemote()
 
         compositeDisposable.clear()
 
-        compositeDisposable.add(getVideoRepo.getAllGames()
+        compositeDisposable.add(getVideoRepo.getAllGames(page, page_size)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object : DisposableSingleObserver<GetGameResponse>() {
                 override fun onSuccess(response: GetGameResponse) {
-                    view?.prepareVideos(response.games)
+                    view?.prepareVideos(response)
                 }
 
                 override fun onError(e: Throwable) {
@@ -54,7 +60,7 @@ class GetVideosPresenter :  GetVideosContrat.Presenter<GetVideosContrat.GetVideo
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object : DisposableSingleObserver<GetVideoResponse>() {
                 override fun onSuccess(response: GetVideoResponse) {
-                    view?.displayVideos(response.videos)
+                    view?.displayVideos(response)
                 }
 
                 override fun onError(e: Throwable) {

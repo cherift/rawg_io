@@ -17,7 +17,7 @@ import retrofit2.http.Query
 interface RawgService {
 
     @GET("games")
-    fun getAllGames() : Single<GetGameResponse>
+    fun getAllGames(@Query("page") page: Int, @Query("page_size") page_size: Int) : Single<GetGameResponse>
 
     @GET("games/{id}/youtube")
     fun getGameVideos(@Path("id") id: String) : Single<GetVideoResponse>
