@@ -13,7 +13,7 @@ Download the apk file [here](https://github.com/cherift/rawg_io/blob/master/app/
 
 ## Maintainers
 
-This projet is maintened by :
+This project is maintened by :
 - [Abdoulaye Chérif Touré](https://github.com/cherift)
 - [Maxime Savary-Leblanc](https://github.com/msavaryleblanc)
 
