@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +25,7 @@ class FavouriteFragment : Fragment(), GetVideosContrat.SearchView {
     var recyclerView : RecyclerView? = null
     var searchAdapter: SearchAdapter? = null
     var gameDao: GameDao? = null
+    var emptyMsqView: TextView? = null
 
     companion object {
         val presenter : SearchPresenter = SearchPresenter()
@@ -39,6 +41,8 @@ class FavouriteFragment : Fragment(), GetVideosContrat.SearchView {
         super.onCreateView(inflater, container, savedInstanceState)
 
         rootView = inflater.inflate(R.layout.save_fragment, container, false)
+
+        emptyMsqView = rootView!!.findViewById(R.id.empty)
 
         setupRecyclerView()
 
@@ -100,6 +104,9 @@ class FavouriteFragment : Fragment(), GetVideosContrat.SearchView {
      * @param games: the list of games
      */
     override fun displayGames(games: MutableList<Game>){
+        if (games.isEmpty()){
+            emptyMsqView!!.visibility = View.VISIBLE
+        }
         searchAdapter!!.bindViewModels(games)
     }
 
