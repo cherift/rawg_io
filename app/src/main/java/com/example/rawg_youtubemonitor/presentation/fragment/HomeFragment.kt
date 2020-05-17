@@ -90,7 +90,10 @@ class HomeFragment : Fragment(), GetVideosContrat.GetVideosView {
      * to the presenter for searching associated videos.
      */
     override fun searchGames(){
+        /*Clearing games and videos list to avoid any duplication*/
         listGames.clear()
+        listVideos.clear()
+
         presenter.getFavouriteGames(gameDao!!)
         listGames.addAll(presenter.favouriteGames)
 

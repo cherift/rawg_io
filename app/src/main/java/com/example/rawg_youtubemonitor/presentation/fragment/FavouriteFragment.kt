@@ -81,6 +81,7 @@ class FavouriteFragment : Fragment(), GetVideosContrat.SearchView {
     override fun searchGames() {
         presenter.attachView(this)
         presenter.getFavouriteGames(gameDao!!)
+        displayGames(presenter.favouriteGames)
     }
 
     /**

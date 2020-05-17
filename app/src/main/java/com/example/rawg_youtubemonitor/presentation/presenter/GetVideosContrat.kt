@@ -64,6 +64,7 @@ class GetVideosContrat {
                 .subscribeWith(object : ResourceSubscriber<MutableList<Game>>() {
 
                     override fun onNext(games : MutableList<Game>) {
+                        favouriteGames.clear()
                         favouriteGames.addAll(games)
                     }
 
