@@ -34,6 +34,10 @@ class FavouriteFragment : Fragment(), GetVideosContrat.SearchView {
         fun newInstance() : FavouriteFragment  = FavouriteFragment()
     }
 
+    /**
+     * Creates and returns the view hierarchy associated with the fragment.
+     * Initialises also the game dao model
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

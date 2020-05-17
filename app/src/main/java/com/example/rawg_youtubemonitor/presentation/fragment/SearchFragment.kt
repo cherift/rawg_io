@@ -41,6 +41,10 @@ class SearchFragment : Fragment(), GetVideosContrat.SearchView {
         fun newInstance() : SearchFragment  = SearchFragment()
     }
 
+    /**
+     * Creates and returns the view hierarchy associated with the fragment.
+     * Initialises also the game dao model
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -66,6 +70,10 @@ class SearchFragment : Fragment(), GetVideosContrat.SearchView {
         return rootView
     }
 
+    /**
+     * Tells the fragment that its activity has completed its own
+     * and starts initialises the searching game event listener.
+     */
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 

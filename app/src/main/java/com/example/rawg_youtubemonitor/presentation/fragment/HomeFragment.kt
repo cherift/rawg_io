@@ -45,6 +45,10 @@ class HomeFragment : Fragment(), GetVideosContrat.GetVideosView {
         fun newInstance() : HomeFragment  = HomeFragment()
     }
 
+    /**
+     * Creates and returns the view hierarchy associated with the fragment.
+     * Initialises also the game dao model
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -80,6 +84,11 @@ class HomeFragment : Fragment(), GetVideosContrat.GetVideosView {
 
     }
 
+
+    /**
+     * Tells the fragment that its activity has completed its own
+     * and starts initialises the searching game event listener.
+     */
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -98,6 +107,15 @@ class HomeFragment : Fragment(), GetVideosContrat.GetVideosView {
         presenter.getFavouriteGames(gameDao!!)
     }
 
+    /**
+     * Sends to the searchGameVideos every games founded in
+     * favourites so that to have the corresponding video.
+     *
+     * If the game list is empty, an empty message will be displayed.
+     *
+     * @param games: the list of games to send for searching corresponding
+     *               videos.
+     */
     override fun prepareVideos(games: MutableList<Game>) {
         if (games.isEmpty()){
             progress!!.visibility = View.GONE
