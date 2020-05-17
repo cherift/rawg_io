@@ -85,7 +85,8 @@ class HomeFragment : Fragment(), GetVideosContrat.GetVideosView {
 
     /**
      * Searches all video associated for each game founded.
-     * As taking long time for search all game for all pages.
+     * As taking long time for searching all game for all pages
+     * we are not going to check if the result has next pag e.
      *
      * @param gameResponse: the response of the the game search
      */
