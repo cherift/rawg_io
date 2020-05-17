@@ -1,6 +1,7 @@
 package com.example.rawg_youtubemonitor.presentation.fragment
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,6 +39,8 @@ class FavouriteFragment : Fragment(), GetVideosContrat.SearchView {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        println("quand je supprime oncreateview")
+
         super.onCreateView(inflater, container, savedInstanceState)
 
         rootView = inflater.inflate(R.layout.save_fragment, container, false)
@@ -49,13 +52,9 @@ class FavouriteFragment : Fragment(), GetVideosContrat.SearchView {
         // Initializes the game dao object
         gameDao = GameDatabase.getInstance(activity!!.application).gameDao()
 
-        return rootView
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
         searchGames()
+
+        return rootView
     }
 
     /**
@@ -81,7 +80,6 @@ class FavouriteFragment : Fragment(), GetVideosContrat.SearchView {
     override fun searchGames() {
         presenter.attachView(this)
         presenter.getFavouriteGames(gameDao!!)
-        displayGames(presenter.favouriteGames)
     }
 
     /**

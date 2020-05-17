@@ -35,7 +35,6 @@ class HomeFragment : Fragment(), GetVideosContrat.GetVideosView {
 
 
     companion object {
-        var listGames : MutableList<Game> = mutableListOf<Game>()
         var listVideos : MutableList<Video> = mutableListOf<Video>()
         var currentGameId: Int? = null
 
@@ -90,14 +89,13 @@ class HomeFragment : Fragment(), GetVideosContrat.GetVideosView {
      * to the presenter for searching associated videos.
      */
     override fun searchGames(){
-        /*Clearing games and videos list to avoid any duplication*/
-        listGames.clear()
         listVideos.clear()
-
+        presenter.attachView(this)
         presenter.getFavouriteGames(gameDao!!)
-        listGames.addAll(presenter.favouriteGames)
+    }
 
-        listGames.forEach { game ->
+    override fun prepareVideos(games: MutableList<Game>) {
+        games.forEach { game ->
             currentGameId = game.id
             val myHandler: Handler = Handler()
             myHandler.postDelayed(Runnable {

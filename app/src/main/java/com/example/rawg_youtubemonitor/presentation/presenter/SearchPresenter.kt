@@ -9,6 +9,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subscribers.ResourceSubscriber
 
 class SearchPresenter : GetVideosContrat.Presenter<GetVideosContrat.SearchView>() {
 
@@ -68,6 +69,34 @@ class SearchPresenter : GetVideosContrat.Presenter<GetVideosContrat.SearchView>(
         )
     }
 
+
+    /**
+     * Gets all games saved in database.
+     *
+     * @param gameDao : the game DAO model
+     */
+    fun getFavouriteGames(gameDao: GameDao){
+        val compositeDisposable : CompositeDisposable = CompositeDisposable()
+
+        compositeDisposable.clear()
+
+        compositeDisposable.add(gameDao.findAll()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeWith(object : ResourceSubscriber<MutableList<Game>>() {
+
+                override fun onNext(games : MutableList<Game>) {
+                    view?.displayGames(games)
+                }
+
+                override fun onComplete() {}
+
+                override fun onError(e: Throwable) {
+                    println(e.message)
+                }
+            })
+        )
+    }
 
     /**
      * Removes a game from the database.

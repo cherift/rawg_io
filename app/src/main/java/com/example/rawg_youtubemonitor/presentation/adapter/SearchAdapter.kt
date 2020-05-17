@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rawg_youtubemonitor.R
 import com.example.rawg_youtubemonitor.data.model.Game
+import com.example.rawg_youtubemonitor.data.model.TypeOfView
 import com.example.rawg_youtubemonitor.presentation.holder.SearchViewHolder
 import com.example.rawg_youtubemonitor.presentation.presenter.GetVideosContrat
 
@@ -29,8 +30,8 @@ class SearchAdapter(val searchview: GetVideosContrat.SearchView) : RecyclerView.
      *
      * @param games : the list of games
      */
-    fun bindViewModels(videos: MutableList<Game>){
-        this.games = videos
+    fun bindViewModels(games: MutableList<Game>){
+        this.games = games
         notifyDataSetChanged()
     }
 
