@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rawg_youtubemonitor.R
 import com.example.rawg_youtubemonitor.YoutubeActivity
+import com.example.rawg_youtubemonitor.data.dao.GameDao
+import com.example.rawg_youtubemonitor.data.database.GameDatabase
 import com.example.rawg_youtubemonitor.data.model.Game
 import com.example.rawg_youtubemonitor.data.model.GetGameResponse
 import com.example.rawg_youtubemonitor.data.model.GetVideoResponse
@@ -29,11 +31,13 @@ class HomeFragment : Fragment(), GetVideosContrat.GetVideosView {
     var videoAdapter : VideoAdapter? = null
     var progress: ProgressBar? = null
     val EXTRA_MESSAGE = "MESSAGE"
+    var gameDao: GameDao? = null
 
 
     companion object {
         var listGames : MutableList<Game> = mutableListOf<Game>()
         var listVideos : MutableList<Video> = mutableListOf<Video>()
+        var currentGameId: Int? = null
 
         val presenter : GetVideosPresenter = GetVideosPresenter()
 
@@ -50,6 +54,10 @@ class HomeFragment : Fragment(), GetVideosContrat.GetVideosView {
         rootView = inflater.inflate(R.layout.all_videos_fragment, container, false)
 
         progress = rootView!!.findViewById(R.id.progress_circular)
+
+        // Initializes the game dao object
+        gameDao = GameDatabase.getInstance(activity!!.application).gameDao()
+
         setupRecyclerView()
 
         return rootView
@@ -73,30 +81,24 @@ class HomeFragment : Fragment(), GetVideosContrat.GetVideosView {
         super.onActivityCreated(savedInstanceState)
 
         presenter.attachView(this)
-        /*
-            Searching games result for page 1 and delaying 300 ms
-            while schedule processing.
-        */
-        val myHandler: Handler = Handler()
-        myHandler.postDelayed(Runnable {
-            presenter.searchGames(1)
-        }, 300)
+
+        searchGames()
     }
 
     /**
-     * Searches all video associated for each game founded.
-     * As taking long time for searching all game for all pages
-     * we are not going to check if the result has next pag e.
-     *
-     * @param gameResponse: the response of the the game search
+     * Searches games saved in database and passes each one
+     * to the presenter for searching associated videos.
      */
-    override fun prepareVideos(gameResponse: GetGameResponse) {
-        listGames.addAll(gameResponse.games)
+    override fun searchGames(){
+        listGames.clear()
+        presenter.getFavouriteGames(gameDao!!)
+        listGames.addAll(presenter.favouriteGames)
 
         listGames.forEach { game ->
+            currentGameId = game.id
             val myHandler: Handler = Handler()
             myHandler.postDelayed(Runnable {
-                presenter.searchGameVideos(game.id.toString())
+                presenter.searchGameVideos(game.id.toString(), 1)
             }, 300)
         }
     }
@@ -108,6 +110,17 @@ class HomeFragment : Fragment(), GetVideosContrat.GetVideosView {
      */
     override fun displayVideos(videoResponse: GetVideoResponse) {
         listVideos.addAll(videoResponse.videos)
+
+        videoResponse.nextUrl?.let {
+            val uri: Uri = Uri.parse(it)
+
+            val myHandler: Handler = Handler()
+            myHandler.postDelayed(Runnable {
+                currentGameId?.let {
+                    presenter.searchGameVideos(it.toString(), uri.getQueryParameter("page")!!.toInt())
+                }
+            }, 300)
+        }
 
         progress!!.visibility = View.GONE
         videoAdapter!!.bindViewModels(listVideos)

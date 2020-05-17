@@ -16,14 +16,14 @@ import retrofit2.http.Query
 
 interface RawgService {
 
-    @GET("games")
-    fun getAllGames(@Query("page") page: Int, @Query("page_size") page_size: Int) : Single<GetGameResponse>
-
     @GET("games/{id}/youtube")
-    fun getGameVideos(@Path("id") id: String) : Single<GetVideoResponse>
+    fun getGameVideos(@Path("id") id: String,
+                      @Query("page") page: Int,
+                      @Query("page_size") page_size: Int) : Single<GetVideoResponse>
 
     @GET("games")
-    fun getSearchedGames(@Query("search") search: String, @Query("page") page: Int) : Single<GetGameResponse>
+    fun getSearchedGames(@Query("search") search: String,
+                         @Query("page") page: Int) : Single<GetGameResponse>
 
     companion object {
         operator fun invoke() : RawgService {
