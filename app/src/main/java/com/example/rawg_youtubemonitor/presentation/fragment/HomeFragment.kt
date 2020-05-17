@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,6 +33,7 @@ class HomeFragment : Fragment(), GetVideosContrat.GetVideosView {
     var progress: ProgressBar? = null
     val EXTRA_MESSAGE = "MESSAGE"
     var gameDao: GameDao? = null
+    var emptyMsqView: TextView? = null
 
 
     companion object {
@@ -51,6 +53,8 @@ class HomeFragment : Fragment(), GetVideosContrat.GetVideosView {
         super.onCreateView(inflater, container, savedInstanceState)
 
         rootView = inflater.inflate(R.layout.all_videos_fragment, container, false)
+
+        emptyMsqView = rootView!!.findViewById(R.id.empty)
 
         progress = rootView!!.findViewById(R.id.progress_circular)
 
@@ -95,6 +99,11 @@ class HomeFragment : Fragment(), GetVideosContrat.GetVideosView {
     }
 
     override fun prepareVideos(games: MutableList<Game>) {
+        if (games.isEmpty()){
+            progress!!.visibility = View.GONE
+            emptyMsqView!!.visibility = View.VISIBLE
+        }
+
         games.forEach { game ->
             currentGameId = game.id
             val myHandler: Handler = Handler()
@@ -121,6 +130,12 @@ class HomeFragment : Fragment(), GetVideosContrat.GetVideosView {
                     presenter.searchGameVideos(it.toString(), uri.getQueryParameter("page")!!.toInt())
                 }
             }, 300)
+        }
+
+        if (listVideos.isEmpty()){
+            emptyMsqView!!.visibility = View.VISIBLE
+        }else{
+            emptyMsqView!!.visibility = View.GONE
         }
 
         progress!!.visibility = View.GONE
